@@ -7,7 +7,7 @@
 require "enumb/version"
 
 module Enumb
-  Enumerator
+
   def enumerator(hash)
     raise 'Parameter must be hash' unless hash.is_a?(Hash)
     raise 'Multiple key/value pairs passed. Only single pair accepted.' unless hash.length == 1
@@ -28,7 +28,7 @@ module Enumb
   end
 
   def parse(descriptor)
-    raise Exception('Descriptor needs to be convertible to string') unless descriptor.respond_to?(:to_s)
+    raise 'Descriptor needs to be convertible to string' unless descriptor.respond_to?(:to_s)
     self.class_variables.each do |x|
       if x.to_s.downcase == '@@__enum__' + descriptor.to_s.downcase
         return self.class_variable_get(x)

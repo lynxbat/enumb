@@ -105,7 +105,19 @@ describe 'enumb' do
       end
       expect(TestEnumDescriptor.to_descriptor('123')).to eq('Nones')
     end
-    it 'if to_value called, should evaluate correctly' do
+    it 'if parse called incorrectly, expect exception' do
+      class TestEnumToValue
+        extend Enumb
+        enumerator :Nones => '123'
+        enumerator :Somes => '456'
+      end
+
+      class No_to_s
+        undef_method :to_s
+      end
+      expect{TestEnumToValue.parse(No_to_s.new)}.to raise_error(Exception)
+    end
+    it 'if parse called correctly, should evaluate correctly' do
       class TestEnumToValue
         extend Enumb
         enumerator :Nones => '123'
