@@ -36,18 +36,40 @@ module Enumb
     end
   end
 
-  def each
-    self.class_variables.each do |e|
-      if (e.to_s.include? '__enum__')
-        yield(self.class_variable_get(e))
+  # Iterates using a block if provided, otherwise returns an array of enums
+  def enums(&block)
+    values = get_enums
+    if block
+      values.each do |v|
+        yield v
       end
+    else
+      values
     end
   end
 
+  # Returns true/false if provided enum is a part of this class
+  def include?(enum_)
+    enums.include?(enum_)
+  end
+
+  alias_method :each, :enums
+  alias_method :map, :enums
+
   private
+
   def create_class_method(name, &block)
     self.class.send(:define_method, name, &block)
   end
+
+  # Return enum class vars
+  def get_enums
+    # Find matching refs
+    v = self.class_variables.find_all { |e| e.to_s.include? '__enum__' }
+    # Lookup class variable from refs and return
+    v.map { |x| class_variable_get(x) }
+  end
+
 
   #decided not to limit in these ways, but;
   #if you want your enum sealed implement something similar
