@@ -135,11 +135,72 @@ describe 'enumb' do
       end
 
       TestEnumToIterate.each do |x|
-        expect((((TestEnumToIterate.Nones |
+        expect(((TestEnumToIterate.Nones |
             TestEnumToIterate.Somes |
             TestEnumToIterate.Anys |
-            TestEnumToIterate.Each) & x) == x)).to eq(true)
+            TestEnumToIterate.Each) & x) == x).to eq(true)
       end
     end
+
+    describe '.include?' do
+
+      it 'returns true for an Enum that is defined' do
+        class TestEnumToInclude
+          extend Enumb
+          enumerator :Alpha => 1
+          enumerator :Beta => 2
+          enumerator :Charlie => 3
+          enumerator :Echo => 4
+        end
+        x = TestEnumToInclude.Beta
+
+        class TestEnumToNotInclude
+          extend Enumb
+          enumerator :Alpha => 5
+          enumerator :Beta => 6
+          enumerator :Charlie => 7
+          enumerator :Echo => 8
+        end
+        y = TestEnumToNotInclude.Beta
+
+        expect(TestEnumToInclude.include?(x)).to be_true
+        expect(TestEnumToInclude.include?(y)).to be_false
+        # Inverse check
+        expect(TestEnumToNotInclude.include?(x)).to be_false
+        expect(TestEnumToNotInclude.include?(y)).to be_true
+      end
+
+    end
+
+    describe '.map' do
+
+      it 'returns Array of enums' do
+        class TestEnumToInclude
+          extend Enumb
+          enumerator :Alpha => 1
+          enumerator :Beta => 2
+          enumerator :Charlie => 3
+          enumerator :Echo => 4
+        end
+        expect(TestEnumToInclude.map).to match_array [TestEnumToInclude.Alpha, TestEnumToInclude.Beta, TestEnumToInclude.Charlie, TestEnumToInclude.Echo]
+      end
+
+    end
+
+    describe '.enums' do
+
+      it 'returns Array of enums' do
+        class TestEnumToInclude
+          extend Enumb
+          enumerator :Alpha => 1
+          enumerator :Beta => 2
+          enumerator :Charlie => 3
+          enumerator :Echo => 4
+        end
+        expect(TestEnumToInclude.map).to match_array [TestEnumToInclude.Alpha, TestEnumToInclude.Beta, TestEnumToInclude.Charlie, TestEnumToInclude.Echo]
+      end
+
+    end
+
   end
 end
