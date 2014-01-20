@@ -165,6 +165,9 @@ describe 'enumb' do
 
         expect(TestEnumToInclude.include?(x)).to be_true
         expect(TestEnumToInclude.include?(y)).to be_false
+        # Inverse check
+        expect(TestEnumToNotInclude.include?(x)).to be_false
+        expect(TestEnumToNotInclude.include?(y)).to be_true
       end
 
     end
