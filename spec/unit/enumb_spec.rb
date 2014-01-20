@@ -154,14 +154,14 @@ describe 'enumb' do
         end
         x = TestEnumToInclude.Beta
 
-        class TestEnumTonNotInclude
+        class TestEnumToNotInclude
           extend Enumb
           enumerator :Alpha => 5
           enumerator :Beta => 6
           enumerator :Charlie => 7
           enumerator :Echo => 8
         end
-        y = TestEnumTonNotInclude.Beta
+        y = TestEnumToNotInclude.Beta
 
         expect(TestEnumToInclude.include?(x)).to be_true
         expect(TestEnumToInclude.include?(y)).to be_false
